@@ -1,7 +1,7 @@
 use nannou::prelude::*;
 
 mod domino;
-use domino::Domino;
+use domino::{Domino, DominoState};
 
 fn main() {
     nannou::app(model)
@@ -18,4 +18,16 @@ fn model(app: &App) -> Model {
         .build()
         .unwrap();
     Model {}
+}
+
+fn update(_app: &App, _model: &mut Model, _update: Update) {
+}
+
+fn view(app: &App, _model: &Model, frame: Frame) {
+    let draw = app.draw();
+    let _win = app.window_rect();
+
+    draw.background().color(RED);
+
+    draw.to_frame(&app, &frame).unwrap();
 }
