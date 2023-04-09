@@ -13,6 +13,7 @@ fn main() {
 }
 
 struct Model {
+    frame: i32,
     dominoes: Vec<Domino>,
 }
 
@@ -23,6 +24,7 @@ fn model(app: &App) -> Model {
         .build()
         .unwrap();
     Model {
+        frame: 0,
         dominoes: vec![
             Domino::new(vec2(0.0, 0.0), vec2(0.0, 1.0), DOMINO_SHAPE),
         ]
@@ -37,9 +39,13 @@ fn key_pressed(_app: &App, model: &mut Model, key: Key) {
 }
 
 fn update(_app: &App, model: &mut Model, _update: Update) {
-    for domino in model.dominoes.iter_mut() {
-        domino.update();
+    if model.frame % 10 == 0 {
+        for domino in model.dominoes.iter_mut() {
+            domino.update();
+        }
     }
+
+    model.frame += 1;
 }
 
 fn view(app: &App, model: &Model, frame: Frame) {

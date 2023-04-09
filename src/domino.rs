@@ -17,6 +17,7 @@ pub struct Domino {
 
 impl Domino {
     pub fn new(pos: Vec2, dir: Vec2, shape: (f32, f32, f32)) -> Domino {
+        let dir = dir.normalize();
         Domino {pos: pos, dir: dir, width: shape.0, depth: shape.1, height: shape.2, state: DominoState::Up}
     }
 
@@ -26,7 +27,10 @@ impl Domino {
 
     pub fn update(&mut self) {
         match self.state {
-            DominoState::Fall => self.state = DominoState::Down,
+            DominoState::Fall => {
+                self.state = DominoState::Down;
+                self.pos += self.dir * (self.height/2.0);
+            },
             _ => (),
         }
     }
