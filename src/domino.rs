@@ -22,7 +22,17 @@ impl Domino {
     }
 
     pub fn knock(&mut self) {
-        self.state = DominoState::Fall;
+        match self.state {
+            DominoState::Up => self.state = DominoState::Fall,
+            _ => (),
+        }
+    }
+
+    pub fn falling(&self) -> bool {
+        match self.state {
+            DominoState::Fall => true,
+            _ => false,
+        }
     }
 
     pub fn update(&mut self) {
