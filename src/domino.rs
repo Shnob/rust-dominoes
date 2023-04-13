@@ -45,6 +45,10 @@ impl Domino {
         }
     }
 
+    pub fn coll(&self, other: &Domino) -> bool {
+        true
+    }
+
     pub fn show(&self, draw: &Draw) {
         let rad = self.dir.angle() - PI / 2.0;
         match self.state {
