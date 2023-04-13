@@ -26,10 +26,10 @@ fn model(app: &App) -> Model {
     Model {
         frame: 0,
         dominoes: vec![
-            Domino::new(vec2(0.0, 0.0), vec2(0.0, 1.0), DOMINO_SHAPE),
-            Domino::new(vec2(0.0, 10.0), vec2(0.0, 1.0), DOMINO_SHAPE),
-            Domino::new(vec2(0.0, 20.0), vec2(0.0, 1.0), DOMINO_SHAPE),
-            Domino::new(vec2(0.0, 30.0), vec2(0.0, 1.0), DOMINO_SHAPE),
+            Domino::new(vec2(000.0, 000.0), vec2(0.0, 1.0), DOMINO_SHAPE),
+            Domino::new(vec2(000.0, 010.0), vec2(0.0, 1.0), DOMINO_SHAPE),
+            Domino::new(vec2(000.0, 020.0), vec2(0.0, 1.0), DOMINO_SHAPE),
+            Domino::new(vec2(000.0, 030.0), vec2(0.0, 1.0), DOMINO_SHAPE),
         ]
     }
 }
