@@ -36,7 +36,7 @@ fn model(app: &App) -> Model {
 
 fn key_pressed(_app: &App, model: &mut Model, key: Key) {
     match key {
-        Key::Space => model.dominoes.get_mut(0).unwrap().knock(),
+        Key::Space => { let d = model.dominoes.get_mut(0).unwrap(); d.knock(d.dir()); },
         _ => (),
     }
 }
@@ -84,9 +84,8 @@ fn cascade(dominoes: &mut Vec<Domino>) {//, to_knock: Vec<usize>) {
 
             if !dom_a.coll(dom_b) {continue;}
 
-            if falling.iter().any(|&i| i == a) {dom_b.knock();}     // TODO: Figure out why this
-                                                                    // isn't working
-            if falling.iter().any(|&i| i == b) {dom_a.knock();}
+            if falling.iter().any(|&i| i == a) {dom_b.knock(dom_a.dir());}
+            if falling.iter().any(|&i| i == b) {dom_a.knock(dom_b.dir());}
         }
     }
 }

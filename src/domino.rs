@@ -21,9 +21,12 @@ impl Domino {
         Domino {pos, dir, width: shape.0, depth: shape.1, height: shape.2, state: DominoState::Up}
     }
 
-    pub fn knock(&mut self) {
+    pub fn knock(&mut self, dir: Vec2) {
         match self.state {
-            DominoState::Up => self.state = DominoState::Fall,
+            DominoState::Up => {
+                self.state = DominoState::Fall;
+                if self.dir.dot(dir) < 0.0 {self.dir *= -1.0;};
+            },
             _ => (),
         }
     }
@@ -47,6 +50,10 @@ impl Domino {
 
     pub fn coll(&self, other: &Domino) -> bool {
         true
+    }
+
+    pub fn dir(&self) -> Vec2 {
+        self.dir
     }
 
     pub fn show(&self, draw: &Draw) {
