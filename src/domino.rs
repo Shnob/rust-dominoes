@@ -1,4 +1,6 @@
 use nannou::prelude::*;
+use parry2d::shape::ConvexPolygon;
+use parry2d::math::Point;
 
 pub enum DominoState {
     Up,
@@ -49,7 +51,30 @@ impl Domino {
     }
 
     pub fn coll(&self, other: &Domino) -> bool {
-        true
+        let a_points: Vec<Point<f32>> = vec![
+            Point::new(self.width/2.0 * self.dir.x + self.pos.x, self.height/2.0 * self.dir.y + self.pos.y),
+            Point::new(-self.width/2.0 * self.dir.x + self.pos.x, self.height/2.0 * self.dir.y + self.pos.y),
+            Point::new(self.width/2.0 * self.dir.x + self.pos.x, -self.height/2.0 * self.dir.y + self.pos.y),
+            Point::new(-self.width/2.0 * self.dir.x + self.pos.x, -self.height/2.0 * self.dir.y + self.pos.y),
+        ];
+        let a = ConvexPolygon::from_convex_hull(a_points.as_slice()).unwrap();
+
+        let b_points: Vec<Point<f32>> = vec![
+            Point::new(other.width/2.0 * other.dir.x + other.pos.x, other.height/2.0 * other.dir.y + other.pos.y),
+            Point::new(-other.width/2.0 * other.dir.x + other.pos.x, other.height/2.0 * other.dir.y + other.pos.y),
+            Point::new(other.width/2.0 * other.dir.x + other.pos.x, -other.height/2.0 * other.dir.y + other.pos.y),
+            Point::new(-other.width/2.0 * other.dir.x + other.pos.x, -other.height/2.0 * other.dir.y + other.pos.y),
+        ];
+        let b = ConvexPolygon::from_convex_hull(b_points.as_slice()).unwrap();
+
+        let q = parry2d::query::contact::contact_support_map_support_map(
+            &parry2d::math::Isometry::new(parry2d::na::Vector2::new(0.0, 0.0), 0.0),
+            &a,
+            &b,
+            0.0
+        );
+
+        q.is_some()
     }
 
     pub fn dir(&self) -> Vec2 {
@@ -60,10 +85,10 @@ impl Domino {
         let rad = self.dir.angle() - PI / 2.0;
         match self.state {
             DominoState::Up | DominoState::Fall => {
-                draw.rect().xy(self.pos).w_h(self.width, self.depth).rotate(rad).no_fill().stroke(WHITE).stroke_weight(1.0);
+                draw.rect().xy(self.pos).w_h(self.width, self.depth).rotate(rad).no_fill().stroke(WHITE).stroke_weight(0.8);
             }
             DominoState::Down => {
-                draw.rect().xy(self.pos).w_h(self.width, self.height).rotate(rad).no_fill().stroke(WHITE).stroke_weight(1.0);
+                draw.rect().xy(self.pos).w_h(self.width, self.height).rotate(rad).no_fill().stroke(WHITE).stroke_weight(0.8);
             }
         }
     }

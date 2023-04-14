@@ -3,7 +3,7 @@ use nannou::prelude::*;
 mod domino;
 use domino::Domino;
 
-const DOMINO_SHAPE: (f32, f32, f32) = (10.0, 3.0, 20.0);
+const DOMINO_SHAPE: (f32, f32, f32) = (12.0, 4.0, 18.0);
 
 fn main() {
     nannou::app(model)
@@ -23,14 +23,16 @@ fn model(app: &App) -> Model {
         .key_pressed(key_pressed)
         .build()
         .unwrap();
+
+    let mut dominoes: Vec<Domino> = vec![];
+
+    for i in (-200..200).step_by(16){
+        dominoes.push(Domino::new(vec2(0.0, i as f32), vec2(0.0, 1.0), DOMINO_SHAPE));
+    }
+
     Model {
         frame: 0,
-        dominoes: vec![
-            Domino::new(vec2(000.0, 000.0), vec2(0.0, 1.0), DOMINO_SHAPE),
-            Domino::new(vec2(000.0, 010.0), vec2(0.0, 1.0), DOMINO_SHAPE),
-            Domino::new(vec2(000.0, 020.0), vec2(0.0, 1.0), DOMINO_SHAPE),
-            Domino::new(vec2(000.0, 030.0), vec2(0.0, 1.0), DOMINO_SHAPE),
-        ]
+        dominoes
     }
 }
 
@@ -42,7 +44,7 @@ fn key_pressed(_app: &App, model: &mut Model, key: Key) {
 }
 
 fn update(_app: &App, model: &mut Model, _update: Update) {
-    if model.frame % 60 == 0 {
+    if model.frame % 10 == 0 {
         cascade(&mut model.dominoes);
     }
 
